@@ -1,0 +1,31 @@
+# 凭据与密钥——绝不提交
+cookies.txt
+cookies*.txt
+secrets.json
+session.json
+*.jks
+*.keystore
+config.sh
+.env
+local.properties
+
+# 运行时产物
+run.pid
+last.json
+history.log
+.today
+.probe
+.lastep
+state.txt
+*.log
+
+# 构建产物
+build/
+.gradle/
+.idea/
+*.apk
+*.idsig
+
+# Python
+__pycache__/
+*.pyc
