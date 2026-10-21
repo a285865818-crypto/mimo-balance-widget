@@ -37,5 +37,5 @@
 - API 响应拼接进 shell 命令前剥离全部 shell 元字符（`root/mimo_balance.sh` 的 `post()` 消毒函数）；
 - 脚本对外部输入只做「删除/读数字」，绝不 eval 或执行文件内容；
 - 凭据文件 600、目录 700；`cookies.txt` 等由 `.gitignore` 排除，无法被意外提交；
-- `mimo_balance.sh` 通过 `am startservice` 把数据推送给本机的可选展示组件（闭源，非本仓库内容）时，同样经 `post()` 消毒后再拼命令；组件不可用时降级为 `cmd notification` 通知卡片，不影响取数安全；
+- `mimo_balance.sh` 通过 `am startservice` 把数据推送给本机的配套展示组件（需自行开发，见 README「配套 App」；目标组件硬编码为 `com.mimo.balance/.UpdateService`）时，同样经 `post()` 消毒后再拼命令；组件不可用时降级为 `cmd notification` 通知卡片，不影响取数安全；
 - 登录脚本只在使用者显式执行时运行，不会后台驻留或自动上传任何数据。

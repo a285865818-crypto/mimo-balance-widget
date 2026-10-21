@@ -14,7 +14,7 @@ GET account.xiaomi.com/pass/serviceLogin?sid=api-platform → 登录页
 （api-platform_serviceToken，有效期约 30 天）
 ```
 
-偷懒办法：在 Edge 手动登录一次 MiMo 并打开余额页，serviceToken 会落在浏览器进程里，用 `renew_from_edge.sh` 扫内存提取（Cookies 库是 `v10$` 自定义加密，直接解密不可行）。
+**手动提取（推荐，风控风险更低）**：在 Edge 手动登录一次 MiMo 并打开余额页，serviceToken 会落在浏览器进程里，用 `renew_from_edge.sh` 扫内存提取（Cookies 库是 `v10$` 自定义加密，直接解密不可行）。
 
 ## 2. 凭据落盘
 

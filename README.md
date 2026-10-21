@@ -2,7 +2,7 @@
 
 在 Root Android 设备上抓取小米 MiMo 平台 token 余额的脚本方案：shell 守护每 2 分钟请求一次余额接口，通过**通知栏卡片**展示，serviceToken 过期后支持一键续期。
 
-> 本仓库只包含**余额获取、登录与续期**相关的脚本和文档。Android 悬浮窗 App 是独立的闭源配套项目，**不包含在本仓库内**；未安装它时脚本自动降级为通知栏卡片，功能完整可用。
+> 本仓库只包含**余额获取、登录与续期**相关的脚本和文档，**不含 Android App**。脚本默认以通知栏卡片展示；想要悬浮窗等进阶效果，可自行开发配套 App（集成方式见「配套 App」一节）。
 
 ---
 
@@ -56,8 +56,8 @@
 
 自行开发时的集成点（均以开源脚本为准，无其他私有约定）：
 
-- 数据接收：`root/mimo_balance.sh` 的 `post()` 函数会通过 `am startservice` 把数据推送给你开发的展示组件，extras 键名为 `title` / `text` / `bal` / `cash` / `gift` / `frz` / `time` / `hist` / `days`；
-- 点击刷新：App 写入触发文件 `refresh.req`，守护每 10 秒轮询并删除（只删不执行）；
+- **组件约定（硬编码）**：脚本推送的目标是 `am startservice -n com.mimo.balance/.UpdateService`，即你的 App 需使用包名 `com.mimo.balance` 并实现 `.UpdateService` 服务（或者自行修改脚本中的目标）；extras 键名为 `title` / `text` / `bal` / `cash` / `gift` / `frz` / `time` / `hist` / `days`；
+- 点击刷新：App 写入触发文件 `/data/data/com.mimo.balance/files/refresh.req`，守护每 10 秒轮询并删除（只删不执行）；
 - 降级保障：展示组件不存在或调用失败时，脚本自动回落到 `cmd notification` 通知卡片，取数流程不受影响；
 - 为避免任意应用伪造调用，你的组件建议同样声明权限门槛（如 `android:permission="android.permission.DUMP"`）。
 
@@ -89,7 +89,7 @@
 3. **首次登录**（二选一）
 
    - **手动提取（推荐）**：在 Edge 浏览器手动登录一次 MiMo 平台并打开余额页，然后执行 `sh /data/adb/mimo_balance/renew_from_edge.sh`，从浏览器内存提取 serviceToken。
-   - **全自动**：`MIMO_USER=... MIMO_PW=... python3 auth/login_sms.py prep` → 收到短信验证码后 `python3 auth/login_sms.py <验证码>`。
+   - **全自动**：`MIMO_USER=... MIMO_PW=... python3 /data/adb/mimo_balance/auth/login_sms.py prep` → 收到短信验证码后 `python3 /data/adb/mimo_balance/auth/login_sms.py <验证码>`（在设备的 Python 3 环境中执行，如 Linux 容器/Termux）。
 
 4. **验证**
 
